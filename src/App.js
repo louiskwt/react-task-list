@@ -3,9 +3,15 @@ import React from 'react'
 
 import Header from './components/Header'
 import Tasks from './components/Tasks'
+import AddTask from './components/AddTask'
+
 import { useState } from 'react'
 
 function App() {
+
+  // Show Add task
+  const [showAddTask, setShowAddTask] = useState(false)
+
   const [tasks, setTasks] = useState(
     [
         // State is immutable and so cannot use push to add
@@ -30,6 +36,15 @@ function App() {
     ]
   )
 
+  // Add Task
+  const addTask = (task) => {
+    // Generate an id in the front end
+    const id = Math.floor(Math.random() * 10000) + 1
+
+    const newTask = {id, ...task}
+    setTasks([...tasks, newTask])
+  }
+
   // Delete Task
   const deleteTask = (id) => {
     // Filter out the state (task list)
@@ -44,7 +59,8 @@ function App() {
   return (
     <div className="container">
       {/* Props title */}
-      <Header />
+      <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
+      {showAddTask && <AddTask onAdd={addTask} /> }
       {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No Tasks to Show'}
     </div>
   );
