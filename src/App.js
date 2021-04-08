@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
+import UpdateTask from './components/UpdateTask'
 import Footer from './components/Footer'
 import About from './components/About'
 
@@ -15,6 +16,11 @@ function App() {
 
   // Show Add task
   const [showAddTask, setShowAddTask] = useState(false)
+
+  // Show Update task
+  const [showUpdateTask, setShowUpdateTask] = useState(false)
+
+
 
   // State is immutable and so cannot use push to add
   const [tasks, setTasks] = useState([])
@@ -43,6 +49,13 @@ function App() {
     return data
   }
 
+  // Fetch task to update
+  const fetchTaskToUpdate = async (id) => {
+    const taskToUpdate = await fetchTask(id);
+    console.log(taskToUpdate);
+    return taskToUpdate;
+  }
+
   // Add Task
   const addTask = async (task) => {
     const res = await fetch('http://localhost:5000/tasks', {
@@ -63,6 +76,8 @@ function App() {
     // setTasks([...tasks, newTask])
 
   }
+
+
 
   // Delete Task
   const deleteTask = async (id) => {
@@ -95,12 +110,21 @@ function App() {
     <Router>
       <div className="container">
         {/* Props title */}
-        <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
+        <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} onUpdate={() => setShowUpdateTask(false)} showUpdate={showUpdateTask} />
 
         <Route path='/' exact render={(props) => (
           <>
             {showAddTask && <AddTask onAdd={addTask} /> }
-            {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No Tasks to Show'}
+            {showUpdateTask && <UpdateTask/>}
+            {tasks.length > 0 ? <Tasks tasks={tasks} 
+                                       onDelete={deleteTask} 
+                                       onToggle={toggleReminder} 
+                                       onUpdate={(id) => {
+                                         fetchTaskToUpdate(id)
+                                         setShowUpdateTask(true)
+                                        }} 
+                                      showUpdate={showUpdateTask} /> 
+              : 'No Tasks to Show'}
           </>
         )} />
         <Route path='/about' component={About} />

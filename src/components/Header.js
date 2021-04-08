@@ -6,7 +6,7 @@ import Button from './Button'
 import PropTypes from 'prop-types'
 
 
-const Header = ({ title, onAdd, showAdd }) => {
+const Header = ({ title, onAdd, showAdd, showUpdate, onUpdate }) => {
 
     const location = useLocation()
 
@@ -14,8 +14,7 @@ const Header = ({ title, onAdd, showAdd }) => {
         <div>
             <header className="header">
                 <h1>{title}</h1>
-
-                { location.pathname === '/' && <Button color={showAdd ? 'red' : 'green'} text={showAdd ? 'Close' : 'Add'} onClick={onAdd} /> }
+                { location.pathname === '/' && <Button color={(showAdd || showUpdate) ? 'red' : 'green'} text={(showAdd || showUpdate) ? 'Close' : 'Add'} onClick={showUpdate ? onUpdate : onAdd} /> }
             </header>
         </div>
     )

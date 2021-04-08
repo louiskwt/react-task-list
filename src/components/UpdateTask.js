@@ -4,25 +4,25 @@ import React from 'react'
 import { useState } from 'react'
 
 
-const AddTask = ({ onAdd }) => {
+const UpdateTask = ({ onUpdate }) => {
     // Component level state to handle form input
     const [text, setText] = useState('')
     const [day, setDay] = useState('')
     const [reminder, setReminder] = useState(false)
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        // Form validation
-        if(!text) {
-            alert('Please Add a Task')
-            return
-        }
-        onAdd({text, day, reminder})
+    // const onSubmit = (e) => {
+    //     e.preventDefault();
+    //     // Form validation
+    //     if(!text) {
+    //         alert('Please Add a Task')
+    //         return
+    //     }
+    //     onAdd({text, day, reminder})
 
-        setText('')
-        setDay('')
-        setReminder(false)
-    }
+    //     setText('')
+    //     setDay('')
+    //     setReminder(false)
+    // }
 
     // const onUpdate = (data) => {
     //     setText(data.text);
@@ -31,7 +31,15 @@ const AddTask = ({ onAdd }) => {
     // }
 
     return (
-        <form className='add-form' onSubmit={ onSubmit }>
+        <form className='update-form'>
+            {/* <div className="form-control">
+                <label>Task</label>
+                <input type="text" 
+                        placeholder='Add Task' 
+                        value={text} 
+                        onChange={(e) => setText(e.target.value)}
+                />
+            </div> */}
             <div className="form-control">
                 <label>Task</label>
                 <input type="text" 
@@ -61,4 +69,4 @@ const AddTask = ({ onAdd }) => {
     )
 }
 
-export default AddTask
+export default UpdateTask
